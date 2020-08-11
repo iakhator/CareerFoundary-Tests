@@ -25,3 +25,7 @@ let pokemonList = [
     type: ['water']
   }
 ];
+
+for(let i = 0; i < pokemonList.length; i++) {
+  document.writeln(`${pokemonList[i].name} (${pokemonList[i].height})`)
+}
