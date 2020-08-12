@@ -1,0 +1,18 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul li {
+  margin: 10px;
+}
+
+.pokemon-btn {
+  background: grey;
+  padding: 10px;
+  border: none;
+}
