@@ -27,15 +27,15 @@ let pokemonList = [
 ];
 
 //loop through pokemonlist to display pokemon
-for(let i = 0; i < pokemonList.length; i++) {
+pokemonList.forEach(pokemon => {
   //declare result to hold pokemon value
-  let result = `${ pokemonList[i].name } (${ pokemonList[i].height })`;
+  let result = `${pokemon.name} (${pokemon.height})`;
   //check if height is greater than 7;
-  if(pokemonList[i].height >= 7) {
+  if (pokemon.height >= 7) {
     result = `<div>${result} - Wow, that's big!</div>`
   } else {
     result = `<div>${result}</div>`
   }
   //display the result
   document.write(result)
-}
+}) 
