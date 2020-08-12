@@ -1,4 +1,5 @@
-let pokemonList = [
+let pokemonRepository = (function () {
+  let pokemonList = [
   {
   name: "Pikachu",
   height: 5,
@@ -23,11 +24,24 @@ let pokemonList = [
     name: "Warturtle",
     height: 1,
     type: ['water']
+  }]
+
+  function add(pokemon) {
+    pokemonList.push(pokemon);
   }
-];
+
+  function getAll() {
+    return pokemonList;
+  }
+
+  return  {
+    add: add,
+    getAll: getAll
+  }
+})();
 
 //loop through pokemonlist to display pokemon
-pokemonList.forEach(pokemon => {
+pokemonRepository.getAll().forEach(pokemon => {
   //declare result to hold pokemon value
   let result = `${pokemon.name} (${pokemon.height})`;
   //check if height is greater than 7;
