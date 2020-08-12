@@ -44,7 +44,7 @@ let pokemonRepository = (function () {
   function getPokemon(name) {
     return pokemonList.filter((pokemon) => pokemon.name == name)
   }
-
+  
   function addListItem(pokemon) {
     let pokemonList = document.querySelector('.pokemon-list');
     let listItem = document.createElement('li');
@@ -52,8 +52,21 @@ let pokemonRepository = (function () {
     button.innerText = pokemon.name;
     button.classList.add('pokemon-btn');
     listItem.appendChild(button);
+    
     pokemonList.appendChild(listItem);
+
+    callHandler(button, pokemon)
   }
+  
+  function showDetails(pokemon) {
+    console.log(pokemon);
+  }
+
+  function callHandler(element, pokemon) {
+    element.addEventListener('click', showDetails.bind(this, pokemon.name))
+  }
+  
+ 
 
   return  {
     add: add,
@@ -64,19 +77,8 @@ let pokemonRepository = (function () {
 })();
 
 //loop through pokemonlist to display pokemon
-pokemonRepository.getAll().forEach(pokemon => {
-  
+pokemonRepository.getAll().forEach(function(pokemon){
   pokemonRepository.addListItem(pokemon)
-  //declare result to hold pokemon value
-  // let result = `${pokemon.name} (${pokemon.height})`;
-  // //check if height is greater than 7;
-  // if (pokemon.height >= 7) {
-  //   result = `<div>${result} - Wow, that's big!</div>`
-  // } else {
-  //   result = `<div>${result}</div>`
-  // }
-  // //display the result
-  // document.write(result)
 }) 
 
 window.repo = pokemonRepository;
