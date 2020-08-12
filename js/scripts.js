@@ -26,17 +26,29 @@ let pokemonRepository = (function () {
     type: ['water']
   }]
 
+  function hasProperties(pokemon) {
+    return pokemon.hasOwnProperty('name') && pokemon.hasOwnProperty('height') && pokemon.hasOwnProperty('type');
+  }
+
   function add(pokemon) {
-    pokemonList.push(pokemon);
+    
+    if(typeof pokemon == 'object' && hasProperties(pokemon)) {
+      pokemonList.push(pokemon);
+    }
   }
 
   function getAll() {
     return pokemonList;
   }
 
+  function getPokemon(name) {
+    return pokemonList.filter((pokemon) => pokemon.name == name)
+  }
+
   return  {
     add: add,
-    getAll: getAll
+    getAll: getAll,
+    getPokemon: getPokemon
   }
 })();
 
@@ -53,3 +65,5 @@ pokemonRepository.getAll().forEach(pokemon => {
   //display the result
   document.write(result)
 }) 
+
+window.repo = pokemonRepository;
