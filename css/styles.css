@@ -11,6 +11,10 @@ ul li {
   margin: 10px;
 }
 
+.loading {
+  display: none;
+}
+
 .pokemon-btn {
   background: grey;
   padding: 10px;
