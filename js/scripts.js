@@ -1,40 +1,15 @@
 let pokemonRepository = (function () {
-  let pokemonList = [
-  {
-  name: "Pikachu",
-  height: 5,
-  type: ['lime', 'lemon']
-  },
-  {
-    name: "Bulbasaur",
-    height: 7,
-    type: ['grass', 'poison']
-  },
-  {
-  name: "Blastoise",
-  height: 1.6,
-  type: ['water']
-  },
-  {
-    name: "Beedrill",
-    height: 1,
-    type: ['bug', 'posion']
-  },
-  {
-    name: "Warturtle",
-    height: 1,
-    type: ['water']
-  }]
+  let pokemonList = [];
+  let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
   function hasProperties(pokemon) {
     return pokemon.hasOwnProperty('name') && pokemon.hasOwnProperty('height') && pokemon.hasOwnProperty('type');
   }
 
   function add(pokemon) {
-    
-    if(typeof pokemon == 'object' && hasProperties(pokemon)) {
+    // if(typeof pokemon == 'object' && hasProperties(pokemon)) {
       pokemonList.push(pokemon);
-    }
+    // }
   }
 
   function getAll() {
@@ -59,26 +34,60 @@ let pokemonRepository = (function () {
   }
   
   function showDetails(pokemon) {
-    console.log(pokemon);
+    loadDetails(pokemon).then(function () {
+      console.log(pokemon);
+    });
   }
 
   function callHandler(element, pokemon) {
-    element.addEventListener('click', showDetails.bind(this, pokemon.name))
+    element.addEventListener('click', showDetails.bind(this, pokemon))
+  }
+
+  function loadList() {
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.results.forEach(function (item) {
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon);
+      });
+    }).catch(function (e) {
+      console.error(e);
+    })
+  }
+
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) {
+      // Now we add the details to the item
+      item.imageUrl = details.sprites.front_default;
+      item.height = details.height;
+      item.types = details.types;
+    }).catch(function (e) {
+      console.error(e);
+    });
   }
   
  
 
   return  {
-    add: add,
     getAll: getAll,
-    getPokemon: getPokemon,
     addListItem: addListItem,
+    loadList: loadList,
   }
 })();
 
 //loop through pokemonlist to display pokemon
-pokemonRepository.getAll().forEach(function(pokemon){
-  pokemonRepository.addListItem(pokemon)
-}) 
+pokemonRepository.loadList().then(function () {
+  // Now the data is loaded!
+  pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+  });
+});
 
 window.repo = pokemonRepository;
