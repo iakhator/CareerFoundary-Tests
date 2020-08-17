@@ -140,6 +140,13 @@ let pokemonRepository = (function () {
       hideModal();
     }
   });
+  
+  //add ability to close modal using keyboard
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      hideModal();
+    }
+  });
 
   return  {
     getAll: getAll,
