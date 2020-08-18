@@ -26,7 +26,9 @@ let pokemonRepository = (function () {
     let listItem = document.createElement('li');
     let button = document.createElement('button');
     button.innerText = pokemon.name;
-    button.classList.add('pokemon-btn');
+    button.classList.add('btn', 'btn-success');
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#pokemonModal')
     listItem.appendChild(button);
     
     pokemonList.appendChild(listItem);
@@ -37,7 +39,6 @@ let pokemonRepository = (function () {
   function showDetails(pokemon) {
     loadDetails(pokemon).then(function () {
       showModal(pokemon)
-      console.log(pokemon);
     });
   }
 
@@ -92,61 +93,29 @@ let pokemonRepository = (function () {
   //show pokemon modal
   function showModal(pokemon) {
     // Clear all existing modal content
-    modalContainer.innerHTML = '';
+    let modalTitle = document.querySelector('.modal-title')
+    let modalBody = document.querySelector('.modal-body')
 
-    let modal = document.createElement('div');
-    modal.classList.add('modal');
+    modalTitle.innerText = "";
+    modalBody.innerHTML = ""
 
-    // Add the new modal content
-    let closeButtonElement = document.createElement('button');
-    closeButtonElement.classList.add('modal-close');
-    closeButtonElement.innerText = 'Close';
-    closeButtonElement.addEventListener('click', hideModal);
-
-    let titleElement = document.createElement('h1');
-    titleElement.innerText = pokemon.name;
-
-    let contentDiv = document.createElement('div')
+    
     let contentElement = document.createElement('p');
-    contentElement.innerText = pokemon.height;
-
     let imageElement = document.createElement('img')
+    
+    modalTitle.innerText = pokemon.name
+    contentElement.innerText = `Height: ${pokemon.height}`;
     imageElement.src = pokemon.imageUrl
 
-    contentDiv.appendChild(contentElement);
-    contentDiv.appendChild(imageElement);
-
-    modal.appendChild(closeButtonElement);
-    modal.appendChild(titleElement);
-    modal.appendChild(contentDiv);
-    modalContainer.appendChild(modal);
-
-    modalContainer.classList.add('is-visible');
+    modalBody.appendChild(imageElement);
+    modalBody.appendChild(contentElement);
   }
 
-  function hideModal() {
-    modalContainer.classList.remove('is-visible');
-  }
 
   function showHideLoadingMessage(param) {
     let para = document.querySelector('.loading');
     para.style.display = param;
   }
-
-  //click outside container to hide modal
-  modalContainer.addEventListener('click', (e) => {
-    let target = e.target;
-    if (target === modalContainer) {
-      hideModal();
-    }
-  });
-  
-  //add ability to close modal using keyboard
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
-      hideModal();
-    }
-  });
 
   return  {
     getAll: getAll,
